@@ -17,12 +17,18 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <bs3:Navbar runat="server" ID="PrimaryNav"></bs3:Navbar>
-    <div>
-        <asp:ContentPlaceHolder ID="MainContent" runat="server">
-        
-        </asp:ContentPlaceHolder>
-    </div>
+        <bs3:Navbar runat="server" ID="PrimaryNav"></bs3:Navbar>
+        <div>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <footer class="footer navbar navbar-fixed-bottom alert alert-info bg-info">
+            <div class="container">
+                <p class="text-muted">&copy; 2016 Contoso University</p>
+            </div>
+        </footer>
+
     </form>
 
     <!-- JavaScript -->
