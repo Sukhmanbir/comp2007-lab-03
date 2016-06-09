@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 //required for EF DB access
 using COMP2007_Lab03.Models;
 using System.Web.ModelBinding;
+using System.Linq.Dynamic;
 
 namespace COMP2007_Lab03
 {
@@ -18,6 +19,9 @@ namespace COMP2007_Lab03
             //if loading the page for the first time, populate the grid from the EF DB
             if(!IsPostBack)
             {
+                Session["SortColumn"] = "StudentID";
+                Session["SortDirection"] = "ASC";
+
                 //Get Data
                 this.GetStudents();
             }
@@ -25,6 +29,8 @@ namespace COMP2007_Lab03
 
         protected void GetStudents()
         {
+            string sortString = Session["SortColumn"].ToString() + " " + Session["SortDirection"].ToString();
+
             //connect to EF DB
             using (DefaultConnection db = new DefaultConnection())
             {
@@ -33,7 +39,7 @@ namespace COMP2007_Lab03
                                 select allStudents);
 
                 //bind the result to the GridView
-                StudentsGridView.DataSource = Students.ToList();
+                StudentsGridView.DataSource = Students.AsQueryable().OrderBy(sortString).ToList();
                 StudentsGridView.DataBind();
             }
         }
@@ -61,6 +67,62 @@ namespace COMP2007_Lab03
 
                 //refresh the grid
                 this.GetStudents();
+            }
+        }
+
+        protected void StudentsGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            //set the new page number
+            StudentsGridView.PageIndex = e.NewPageIndex;
+
+            //refresh the grid
+            this.GetStudents();
+        }
+
+        protected void PageSizeDropDownList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //set new page size
+            StudentsGridView.PageSize = Convert.ToInt32(PageSizeDropDownList.SelectedValue);
+
+            //refresh the grid
+            this.GetStudents();
+        }
+
+        protected void StudentsGridView_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            //get the column to sort by
+            Session["SortColumn"] = e.SortExpression;
+
+            //refresh the grid
+            this.GetStudents();
+
+            //toggle the direction
+            Session["SortDirection"] = Session["SortDirection"].ToString() == "ASC" ? "DESC" : "ASC";
+        }
+
+        protected void StudentsGridView_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (IsPostBack)
+            {
+                if(e.Row.RowType == DataControlRowType.Header)//check to see if the click is on the header row
+                {
+                    LinkButton linkbutton = new LinkButton();
+
+                    for(int index = 0; index < StudentsGridView.Columns.Count; index++)
+                    {
+                        if(StudentsGridView.Columns[index].SortExpression == Session["SortColumn"].ToString())
+                        {
+                            if(Session["SortDirection"].ToString() == "ASC")
+                            {
+                                linkbutton.Text = " <i class='fa fa-caret-up fa-lg'></i>";
+                            }else
+                            {
+                                linkbutton.Text = " <i class='fa fa-caret-down fa-lg'></i>";
+                            }
+                            e.Row.Cells[index].Controls.Add(linkbutton);
+                        }
+                    }
+                }
             }
         }
     }
