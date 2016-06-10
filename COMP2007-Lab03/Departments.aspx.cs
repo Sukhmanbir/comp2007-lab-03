@@ -64,12 +64,7 @@ namespace COMP2007_Lab03
                 this.GetDepartments();
             }
         }
-
-        protected void DepartmentsGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-
-        }
-
+        
         protected void DepartmentsGridView_Sorting(object sender, GridViewSortEventArgs e)
         {
 

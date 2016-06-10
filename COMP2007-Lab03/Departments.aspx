@@ -5,14 +5,11 @@
     <div class="conatiner">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
-                <h1>Departments List</h1>
+                <h1>Departments List <a href="DepartmentDetails.aspx" class="pull-right btn btn-primary">Create</a></h1>
                 <asp:GridView runat="server" ID="DepartmentsGridView" AutoGenerateColumns="false"
                                 CssClass="table table-striped table-bordered table-hover"
                                 DataKeyNames="DepartmentID" OnRowDeleting="DepartmentsGridView_RowDeleting"
-                                AllowPaging="true" PageSize="3" OnPageIndexChanging="DepartmentsGridView_PageIndexChanging"
                                 AllowSorting="true" OnSorting="DepartmentsGridView_Sorting" OnRowDataBound="DepartmentsGridView_RowDataBound">
-        
-
                     <Columns>
                         <asp:BoundField DataField="DepartmentID" HeaderText="Department ID" Visible="true" SortExpression="DepartmentID" />
                         <asp:BoundField DataField="Name" HeaderText="Name" Visible="true" SortExpression="Name" />

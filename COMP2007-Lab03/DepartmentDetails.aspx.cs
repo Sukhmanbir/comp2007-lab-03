@@ -46,7 +46,7 @@ namespace COMP2007_Lab03
 
         protected void CancelButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~.Departments.aspx");
+            Response.Redirect("~/Departments.aspx");
         }
 
         protected void SaveButton_Click(object sender, EventArgs e)
