@@ -18,14 +18,23 @@ namespace COMP2007_Lab03
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            // get data
-            this.GetDepartments();
+            //if loading the page for the first time, populate the grid from the EF DB
+            if (!IsPostBack)
+            {
+                Session["SortColumn"] = "DepartmentID";
+                Session["SortDirection"] = "ASC";
+
+                //Get Data
+                this.GetDepartments();
+            }
 
         }
 
         protected void GetDepartments()
         {
-            
+
+            string sortString = Session["SortColumn"].ToString() + " " + Session["SortDirection"].ToString();
+
             //connect to EF DB
             using (DefaultConnection db = new DefaultConnection())
             {
@@ -34,7 +43,7 @@ namespace COMP2007_Lab03
                                 select allDepartments);
 
                 //bind the result to the GridView
-                DepartmentsGridView.DataSource = Departments.AsQueryable().ToList();
+                DepartmentsGridView.DataSource = Departments.AsQueryable().OrderBy(sortString).ToList();
                 DepartmentsGridView.DataBind();
             }
         }
@@ -64,6 +73,8 @@ namespace COMP2007_Lab03
                 this.GetDepartments();
             }
         }
+
+
         
         protected void DepartmentsGridView_Sorting(object sender, GridViewSortEventArgs e)
         {
@@ -76,6 +87,8 @@ namespace COMP2007_Lab03
             //toggle the direction
             Session["SortDirection"] = Session["SortDirection"].ToString() == "ASC" ? "DESC" : "ASC";
         }
+
+
 
         protected void DepartmentsGridView_RowDataBound(object sender, GridViewRowEventArgs e)
         {
