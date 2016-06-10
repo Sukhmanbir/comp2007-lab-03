@@ -15,6 +15,10 @@
                         <asp:BoundField DataField="Name" HeaderText="Name" Visible="true" SortExpression="Name" />
                         <asp:BoundField DataField="Budget" HeaderText="First Name" Visible="true" SortExpression="Budget" />
                         
+                        <asp:HyperLinkField HeaderText="Edit" Text="<i class='fa fa-pencil-square-o fa-lg'></i> Edit" NavigateUrl="~/DepartmentDetails.aspx"
+                            DataNavigateUrlFields="DepartmentID" DataNavigateUrlFormatString="DepartmentDetails.aspx?DepartmentID={0}" 
+                            ItemStyle-CssClass="btn btn-primary btn-sm" ControlStyle-ForeColor="White" />
+
                         <asp:CommandField HeaderText="Delete" DeleteText="<i class='fa fa-trash-o fa-lg'></i> Delete" ShowDeleteButton="true" 
                             ButtonType="Link" ControlStyle-CssClass="btn btn-danger btn-sm" />
                     </Columns>

@@ -70,7 +70,7 @@ namespace COMP2007_Lab03
                 }
 
                 newDepartment.Name = DepartmentNameTextBox.Text;
-                newDepartment.Budget = Convert.ToInt32(BudgetTextBox.Text);
+                newDepartment.Budget = Convert.ToDecimal(BudgetTextBox.Text);
 
                 //adds new department to the Department Table collection
 

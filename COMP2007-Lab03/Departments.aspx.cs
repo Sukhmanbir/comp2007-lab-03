@@ -67,12 +67,41 @@ namespace COMP2007_Lab03
         
         protected void DepartmentsGridView_Sorting(object sender, GridViewSortEventArgs e)
         {
+            //get the column to sort by
+            Session["SortColumn"] = e.SortExpression;
 
+            //refresh the grid
+            this.GetDepartments();
+
+            //toggle the direction
+            Session["SortDirection"] = Session["SortDirection"].ToString() == "ASC" ? "DESC" : "ASC";
         }
 
         protected void DepartmentsGridView_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            if (IsPostBack)
+            {
+                if (e.Row.RowType == DataControlRowType.Header)//check to see if the click is on the header row
+                {
+                    LinkButton linkbutton = new LinkButton();
 
+                    for (int index = 0; index < DepartmentsGridView.Columns.Count; index++)
+                    {
+                        if (DepartmentsGridView.Columns[index].SortExpression == Session["SortColumn"].ToString())
+                        {
+                            if (Session["SortDirection"].ToString() == "ASC")
+                            {
+                                linkbutton.Text = " <i class='fa fa-caret-up fa-lg'></i>";
+                            }
+                            else
+                            {
+                                linkbutton.Text = " <i class='fa fa-caret-down fa-lg'></i>";
+                            }
+                            e.Row.Cells[index].Controls.Add(linkbutton);
+                        }
+                    }
+                }
+            }
         }
     }
 }
